@@ -1,0 +1,46 @@
+import matplotlib.pyplot as plt
+
+# Simulation parameters
+initial_population = 1000
+number_of_years = 20
+death_rate = 0.02
+birth_rate_5 = 0.05
+birth_rate_7 = 0.07
+
+def simulate_population(starting_population, years, birth_rate, death_rate):
+    population = [starting_population]
+    for year in range(years):
+        current_population = population[-1]
+        births = current_population * birth_rate
+        deaths = current_population * death_rate
+        next_population = current_population + births - deaths
+        population.append(next_population)
+    return population
+
+# Run both experiments
+population_5 = simulate_population(initial_population, number_of_years, birth_rate_5, death_rate)
+population_7 = simulate_population(initial_population, number_of_years, birth_rate_7, death_rate)
+
+print(f"Population after 20 years (5% birth rate): {population_5[-1]:,.0f}")
+print(f"Population after 20 years (7% birth rate): {population_7[-1]:,.0f}")
+
+# Plot both simulations
+year_values = range(number_of_years + 1)
+plt.figure(figsize=(10, 5))
+plt.plot(year_values, population_5, marker="o", label="Birth rate: 5%")
+plt.plot(year_values, population_7, marker="s", label="Birth rate: 7%")
+plt.title("Population Growth Over 20 Years")
+plt.xlabel("Year")
+plt.ylabel("Population")
+plt.xticks(range(0, number_of_years + 1, 2))
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+# Compare final populations
+difference = population_7[-1] - population_5[-1]
+print(f"Difference: {difference:,.0f} additional people")
+
+# Increasing the birth rate from 5% to 7%, while keeping deaths at 2%,
+# raises net annual growth from 3% to 5%. Population therefore grows faster.
